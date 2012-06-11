@@ -153,7 +153,7 @@ extern void __strlcpy_error()
     __attribute__((__error__("strlcpy called with size bigger than buffer")));
 extern size_t __strlcpy_chk(char *, const char *, size_t, size_t);
 
-__BIONIC_FORTIFY_INLINE
+__BIONIC_FORTIFY_INLINE_WITHOUT_ALWAYS
 size_t strlcpy(char *dest, const char *src, size_t size) {
     size_t bos = __builtin_object_size(dest, 0);
 
@@ -223,39 +223,6 @@ size_t strlen(const char *s) {
 
     return __strlen_chk(s, bos);
 }
-
-__purefunc extern char* __strchr_real(const char *, int)
-    __asm__(__USER_LABEL_PREFIX__ "strchr");
-extern char* __strchr_chk(const char *, int, size_t);
-
-__BIONIC_FORTIFY_INLINE
-char* strchr(const char *s, int c) {
-    size_t bos = __builtin_object_size(s, 0);
-
-    // Compiler doesn't know destination size. Don't call __strchr_chk
-    if (bos == __BIONIC_FORTIFY_UNKNOWN_SIZE) {
-        return __strchr_real(s, c);
-    }
-
-    return __strchr_chk(s, c, bos);
-}
-
-__purefunc extern char* __strrchr_real(const char *, int)
-    __asm__(__USER_LABEL_PREFIX__ "strrchr");
-extern char* __strrchr_chk(const char *, int, size_t);
-
-__BIONIC_FORTIFY_INLINE
-char* strrchr(const char *s, int c) {
-    size_t bos = __builtin_object_size(s, 0);
-
-    // Compiler doesn't know destination size. Don't call __strrchr_chk
-    if (bos == __BIONIC_FORTIFY_UNKNOWN_SIZE) {
-        return __strrchr_real(s, c);
-    }
-
-    return __strrchr_chk(s, c, bos);
-}
-
 
 #endif /* defined(__BIONIC_FORTIFY_INLINE) */
 
