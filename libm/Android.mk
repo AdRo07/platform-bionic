@@ -72,6 +72,7 @@ libm_common_src_files:= \
 	src/s_ceill.c \
 	src/s_copysign.c \
 	src/s_copysignf.c \
+	src/s_cos.c \
 	src/s_cosf.c \
 	src/s_erf.c \
 	src/s_erff.c \
@@ -131,6 +132,7 @@ libm_common_src_files:= \
 	src/s_signgam.c \
 	src/s_significand.c \
 	src/s_significandf.c \
+	src/s_sin.c \
 	src/s_sinf.c \
 	src/s_tan.c \
 	src/s_tanf.c \
@@ -161,6 +163,7 @@ ifeq ($(TARGET_ARCH),arm)
 	src/e_sqrtf.c
 
   ifeq ($(TARGET_USE_KRAIT_BIONIC_OPTIMIZATION),true)
+  ifneq ($(TARGET_USE_LINARO_OPTIMIZATION),true)
     libm_common_src_files += \
 	  arm/e_pow.S \
 	  arm/s_cos.S \
@@ -171,18 +174,29 @@ ifeq ($(TARGET_ARCH),arm)
 	  src/s_cos.c \
       src/s_sin.c
   endif
+  endif
 
   ifeq ($(TARGET_USE_SPARROW_BIONIC_OPTIMIZATION),true)
+  ifneq ($(TARGET_USE_LINARO_OPTIMIZATION),true)
     libm_common_src_files += \
           arm/e_pow.S
     libm_common_cflags += -DSPARROW_NEON_OPTIMIZATION
   endif
+  endif
 
   ifeq ($(TARGET_USE_SCORPION_BIONIC_OPTIMIZATION),true)
+  ifneq ($(TARGET_USE_LINARO_OPTIMIZATION),true)
     libm_common_src_files += \
           arm/e_pow.S
     libm_common_cflags += -DSCORPION_NEON_OPTIMIZATION
   endif
+  endif
+
+  ifeq ($(TARGET_USE_LINARO_OPTIMIZATION),true)
+    libm_common_src_files += \
+          arm-linaro/e_pow.S
+  endif
+
 
   libm_common_includes = $(LOCAL_PATH)/arm
 endif
