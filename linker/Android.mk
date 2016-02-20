@@ -64,7 +64,7 @@ LOCAL_STATIC_LIBRARIES := libc_nomalloc libziparchive libutils libz liblog
 
 LOCAL_FORCE_STATIC_EXECUTABLE := true
 
-ifeq ($(TARGET_NEEDS_NON_PIE_SUPPORT),true)
+ifeq ($(TARGET_ENABLE_NON_PIE_SUPPORT),true)
   LOCAL_CFLAGS += -DENABLE_NON_PIE_SUPPORT
 endif
 

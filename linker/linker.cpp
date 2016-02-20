@@ -1861,10 +1861,10 @@ bool soinfo::relocate(const VersionTracker& version_tracker, ElfRelIteratorT&& r
 
     const ElfW(Sym)* s = nullptr;
     soinfo* lsi = nullptr;
+    const version_info* vi = nullptr;
 
     if (sym != 0) {
       sym_name = get_string(symtab_[sym].st_name);
-      const version_info* vi = nullptr;
 
       if (!lookup_version_info(version_tracker, sym, sym_name, &vi)) {
         return false;
